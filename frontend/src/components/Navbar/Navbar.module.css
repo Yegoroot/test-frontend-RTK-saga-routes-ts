@@ -1,0 +1,10 @@
+nav {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+nav ul {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}

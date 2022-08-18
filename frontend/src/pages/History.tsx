@@ -1,3 +1,8 @@
 import { FC } from 'react'
+import { History } from '../features/history/History'
 
-export const History: FC = () => <div>History</div>
+export const HistoryPage: FC = () => (
+  <div>
+    <History />
+  </div>
+)

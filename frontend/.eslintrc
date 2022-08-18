@@ -41,6 +41,7 @@
     }
   },
   "rules": {
+    "react-hooks/exhaustive-deps": "off",
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": [
       "off"

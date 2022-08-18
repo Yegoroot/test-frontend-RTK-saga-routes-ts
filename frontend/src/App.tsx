@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom'
 import { FC } from 'react'
 
-import { History, Home } from './pages'
+import { HistoryPage, HomePage } from './pages'
 import { Navbar } from './components'
 
 import './App.css'
@@ -17,11 +17,11 @@ export const App:FC = () => (
       <Routes>
         <Route
           path="/"
-          element={<Home />}
+          element={<HomePage />}
         />
         <Route
           path="/history"
-          element={<History />}
+          element={<HistoryPage />}
         />
       </Routes>
     </Router>

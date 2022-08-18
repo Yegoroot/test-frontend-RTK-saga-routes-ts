@@ -95,11 +95,11 @@ node index.js
 Получение списка эвентов.
 
 ```
-POST: http://localhost:5010/events
+GET: http://localhost:5010/events
 ```
 
 Получение данных по ресурсам. В параметрах нужно передать ids со списком id ресурсов.
 
 ```
-POST: http://localhost:5010/resources
+GET: http://localhost:5010/resources
 ```

@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 })
 
-app.post('/events', (req, res) => {
+app.get('/events', (req, res) => {
   let data = JSON.parse(fs.readFileSync('./data/events.json'));
   res.json({ items: data })
 })
@@ -24,6 +24,8 @@ app.post('/resources', (req, res) => {
   const body = req.body;
 
   let result = [];
+
+  console.log(body.ids)
 
   if (body && body.ids) {
     for (const id of body.ids) {

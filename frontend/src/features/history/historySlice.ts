@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import moment from 'moment'
 import { RootState } from '../../app/store'
 
 import axios from '../../utils/axios'
@@ -37,9 +38,12 @@ export const getEvents = createAsyncThunk(
   async () => {
     const response = await axios.get('http://localhost:5010/events').then((res) => res)
 
+    response.data.items.map((i: Event) => console.log(moment(i.date).format('DD.MM.YYYY')))
     return response.data
   }
 )
+
+// группировка по Condition/дата
 
 export const getResources = createAsyncThunk(
   'history/fetchResources',

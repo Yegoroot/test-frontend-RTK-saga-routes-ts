@@ -1,11 +1,12 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import moment from 'moment'
+
 import { RootState } from '../../app/store'
-
 import axios from '../../utils/axios'
+import { compareDates } from '../../utils/date'
 
-interface Event {
+export interface Event {
   id: string,
   appointmentId: string,
   name: string,
@@ -13,7 +14,7 @@ interface Event {
   date: string
 }
 
-interface Resource {
+export interface Resource {
   id: string,
   appointmentId: string,
   name: string,
@@ -23,23 +24,36 @@ interface Resource {
 
 export interface HistoryState {
   status: 'idle' | 'loading' | 'failed';
-  events: Event[]
+  events: Record<string, Event[]>
   resources: Resource[]
 }
 
 const initialState: HistoryState = {
   status: 'loading',
-  events: [],
+  events: {},
   resources: []
 }
 
 export const getEvents = createAsyncThunk(
   'history/fetchEvents',
   async () => {
-    const response = await axios.get('http://localhost:5010/events').then((res) => res)
+    const response = await axios.get<{items: Event[]}>('http://localhost:5010/events').then((res) => res)
 
-    response.data.items.map((i: Event) => console.log(moment(i.date).format('DD.MM.YYYY')))
-    return response.data
+    const eventsMap = new Map()
+    response.data.items.sort((a, b) => compareDates(a.date, b.date)).map((event: Event) => {
+      const key = `${event.resource}/${moment(event.date).format('DD.MM.YYYY')}`
+      const value = eventsMap.get(key)
+      let eventList: Event[] = []
+
+      if (value) {
+        eventList = [...value, event]
+      }
+
+      eventsMap.set(key, eventList)
+      return null
+    })
+
+    return Object.fromEntries(eventsMap)
   }
 )
 
@@ -71,7 +85,7 @@ export const historySlice = createSlice({
       })
       .addCase(getEvents.fulfilled, (state, action) => {
         state.status = 'idle'
-        state.events = action.payload.items
+        state.events = action.payload
       })
       .addCase(getResources.pending, (state) => {
         state.status = 'loading'

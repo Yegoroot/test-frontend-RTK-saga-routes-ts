@@ -1,4 +1,7 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
+import {
+  configureStore, ThunkAction, Action,
+} from '@reduxjs/toolkit'
+
 import counterReducer from '../features/counter/counterSlice'
 import historyReducer from '../features/history/historySlice'
 
@@ -7,6 +10,9 @@ export const store = configureStore({
     counter: counterReducer,
     history: historyReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false
+  }),
 })
 
 export type AppDispatch = typeof store.dispatch;

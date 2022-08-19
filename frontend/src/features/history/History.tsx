@@ -1,4 +1,5 @@
 import { useEffect, FC } from 'react'
+import moment from 'moment'
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 import {
@@ -31,19 +32,24 @@ export const History:FC = () => {
         <div className={styles.type}>
           <span
             className={styles.badge}
-            style={{
-              background: getColorByTitle(title)
-            }}
+            style={{ background: getColorByTitle(title) }}
           >
             {title}
           </span>
+        </div>
+        <div className={styles.eventinfo}>
+          {events[1].map((event) => (
+            <div
+              key={event.id}
+              className={styles.eventinfo__row}
+            >
+              <div className={styles.details}>{event.id}</div>
+              <div className={styles.code}>code</div>
+              <div className={styles.date}>{moment(event.date).format('DD MMM yyyy')}</div>
+            </div>
+          ))}
+        </div>
 
-        </div>
-        <div className={styles.details}>
-          {events[1].map((event) => (<div key={event.id}>{event.id}</div>))}
-        </div>
-        <div className={styles.code}>code</div>
-        <div className={styles.date}>date</div>
       </div>
     )
   }
@@ -51,10 +57,10 @@ export const History:FC = () => {
   return (
     <div className={styles.table}>
       <div className={styles.header}>
-        <div className={styles.type}>Event type</div>
-        <div className={styles.details}>Details</div>
-        <div className={styles.code}>Code</div>
-        <div className={styles.date}>Date</div>
+        <div>Event type</div>
+        <div>Details</div>
+        <div>Code</div>
+        <div>Date</div>
       </div>
       {events.map((event) => listEvents(event))}
     </div>

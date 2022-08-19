@@ -9,7 +9,7 @@
 .table__row {
   padding: 20px 0px;
   display: grid;
-  grid-template-columns: var(--grid-col);
+  grid-template-columns: 200px 1fr;
   border-top: solid var(--light) 1px;
 }
 
@@ -23,4 +23,18 @@
 .badge {
   padding: 3px 6px;
   border-radius: 6px;
+}
+
+.eventinfo div:nth-child(1) div:nth-child(3) {
+  color: var(--primary);
+}
+
+.eventinfo__row {
+  display: grid;
+  grid-template-columns: 2fr 300px 100px;
+  padding-bottom: 10px;
+}
+
+.date {
+  color: var(--light-2)
 }

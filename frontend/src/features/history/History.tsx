@@ -6,7 +6,6 @@ import {
   getEvents,
   selectHistory,
   Event,
-  getResources
 } from './historySlice'
 import styles from './History.module.css'
 
@@ -19,7 +18,6 @@ export const History:FC = () => {
 
   useEffect(() => {
     dispatch(getEvents())
-    dispatch(getResources())
   }, [])
 
   if (history.status === 'loading') return <div>Loading...</div>
@@ -28,7 +26,10 @@ export const History:FC = () => {
     const title = getEventGroupTitle(events[0])
 
     return (
-      <div className={styles.table__row}>
+      <div
+        className={styles.table__row}
+        key={events[0]}
+      >
         <div className={styles.type}>
           <span
             className={styles.badge}

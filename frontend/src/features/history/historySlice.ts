@@ -6,6 +6,8 @@ import { RootState } from '../../app/store'
 import axios from '../../utils/axios'
 import { compareDates } from '../../utils/date'
 
+export const LOAD_RESOURCE = 15
+
 export interface Event {
   id: string,
   appointmentId: string,
@@ -16,28 +18,27 @@ export interface Event {
 
 export interface Resource {
   id: string,
-  appointmentId: string,
-  name: string,
-  resource: string
-  date: string
+  details: string,
+  values: string[],
+  code: string
 }
 
 export interface HistoryState {
   status: 'idle' | 'loading' | 'failed';
   events: Record<string, Event[]>
-  resources: Resource[]
+  resources: Record<string, Resource[]>
 }
 
 const initialState: HistoryState = {
   status: 'loading',
   events: {},
-  resources: []
+  resources: {}
 }
 
 export const getEvents = createAsyncThunk(
   'history/fetchEvents',
   async () => {
-    const response = await axios.get<{items: Event[]}>('http://localhost:5010/events').then((res) => res)
+    const response = await axios.get<{items: Event[]}>('/events').then((res) => res)
 
     const eventsMap = new Map()
     response.data.items.sort((a, b) => compareDates(a.date, b.date)).map((event: Event) => {
@@ -57,25 +58,13 @@ export const getEvents = createAsyncThunk(
   }
 )
 
-// группировка по Condition/дата
-
-export const getResources = createAsyncThunk(
-  'history/fetchResources',
-  async () => {
-    const response = await axios.post('http://localhost:5010/resources', {
-      ids: ['Appointment/61c9a7b2591f62638eec3e88', 'Appointment/6239ce03bf646fd0dde4e9d2']
-    }).then((res) => res)
-    return response.data
-  }
-)
-
 export const historySlice = createSlice({
   name: 'history',
   initialState,
   reducers: {
-    // smth: (state) => {
-    //   state.status -= 1
-    // },
+    setRecources: (state, action) => {
+      state.resources = action.payload
+    }
   },
 
   extraReducers: (builder) => {
@@ -86,13 +75,6 @@ export const historySlice = createSlice({
       .addCase(getEvents.fulfilled, (state, action) => {
         state.status = 'idle'
         state.events = action.payload
-      })
-      .addCase(getResources.pending, (state) => {
-        state.status = 'loading'
-      })
-      .addCase(getResources.fulfilled, (state, action) => {
-        state.status = 'idle'
-        state.resources = action.payload.items
       })
   },
 })

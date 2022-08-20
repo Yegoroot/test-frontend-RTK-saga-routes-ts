@@ -61,7 +61,7 @@ export const History:FC = () => {
 
   return (
     <div className={styles.table}>
-      <div className={styles.header}>
+      <div className={styles.table__header}>
         <div>Event type</div>
         <div>Details</div>
         <div>Code</div>

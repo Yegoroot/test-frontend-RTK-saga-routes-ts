@@ -13,7 +13,7 @@
   border-top: solid var(--light) 1px;
 }
 
-.header {
+.table__header {
   display: grid;
   grid-template-columns: var(--grid-col);
   grid-gap: 10px;
@@ -39,4 +39,38 @@
 
 .date {
   color: var(--light-2)
+}
+
+@media screen and (max-width: 920px) {
+
+  .table__header {
+    display: none;
+  }
+
+  .eventinfo__row {
+    position: relative;
+    grid-template-columns: 2fr 100px;
+  }
+
+  .table__row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding-bottom: 10px;
+    position: relative;
+  }
+
+  .date {
+    display: none;
+  }
+
+  .eventinfo div:nth-child(1) div:nth-child(3) {
+    display: block;
+    position: absolute;
+    top: -40px;
+    right: 10px;
+  }
+
+  .code {
+    color: var(--second);
+  }
 }

@@ -1,5 +1,5 @@
 :root {
-  --grid-col: 200px 2fr 300px 100px;
+  --grid-col: 200px 2fr 100px 100px;
 }
 
 .table {
@@ -16,6 +16,7 @@
 .header {
   display: grid;
   grid-template-columns: var(--grid-col);
+  grid-gap: 10px;
   color: var(--second);
   padding-bottom: 20px;
 }
@@ -31,7 +32,8 @@
 
 .eventinfo__row {
   display: grid;
-  grid-template-columns: 2fr 300px 100px;
+  grid-template-columns: 2fr 100px 100px;
+  grid-gap: 10px;
   padding-bottom: 10px;
 }
 

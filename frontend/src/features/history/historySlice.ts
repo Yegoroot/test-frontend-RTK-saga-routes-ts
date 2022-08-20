@@ -26,7 +26,7 @@ export interface Resource {
 export interface HistoryState {
   status: 'idle' | 'loading' | 'failed';
   events: Record<string, Event[]>
-  resources: Record<string, Resource[]>
+  resources: Record<string, Resource>
 }
 
 const initialState: HistoryState = {

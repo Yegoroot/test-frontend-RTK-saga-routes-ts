@@ -15,6 +15,10 @@ export const History:FC = () => {
   const history = useAppSelector(selectHistory)
   const dispatch = useAppDispatch()
   const events = Object.entries(history.events)
+  const { resources } = history
+
+  const getDetails = (key: string) => (resources[key] ? resources[key].details : '')
+  const getCode = (key: string) => (resources[key] ? resources[key].code : '')
 
   useEffect(() => {
     dispatch(getEvents())
@@ -44,8 +48,8 @@ export const History:FC = () => {
               key={event.id}
               className={styles.eventinfo__row}
             >
-              <div className={styles.details}>{event.id}</div>
-              <div className={styles.code}>code</div>
+              <div className={styles.details}>{getDetails(`${event.resource}/${event.id}`)}</div>
+              <div className={styles.code}>{getCode(`${event.resource}/${event.id}`)}</div>
               <div className={styles.date}>{moment(event.date).format('DD MMM yyyy')}</div>
             </div>
           ))}

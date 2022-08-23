@@ -35,13 +35,43 @@ const initialState: HistoryState = {
   resources: {}
 }
 
+const cortByDate = (a: Event, b: Event) => compareDates(a.date, b.date)
+
 export const getEvents = createAsyncThunk(
   'history/fetchEvents',
   async () => {
     const response = await axios.get<{items: Event[]}>('/events').then((res) => res)
+    const list = response.data.items
+
+    const appintmentList: Event[] = []
+    const notAppintmentList: Event[] = []
+
+    list.map((ev) => {
+      if (ev.resource === 'Appointment') {
+        appintmentList.push(ev)
+      } else {
+        notAppintmentList.push(ev)
+      }
+      return null
+    })
+
+    const eventList: Event[] = []
+    appintmentList
+      .sort(cortByDate)
+      .map((appointemt) => {
+        const subEvents = notAppintmentList.filter((event) => appointemt.id === event.appointmentId).sort(cortByDate)
+        eventList.push(appointemt, ...subEvents)
+        return []
+      })
+
+    const withoutAppointmentIdList = notAppintmentList.filter((event) => !event.appointmentId).sort(cortByDate)
+
+    eventList.push(...withoutAppointmentIdList)
+
+    console.log('Event List', eventList)
 
     const eventsMap = new Map()
-    response.data.items.sort((a, b) => compareDates(a.date, b.date)).map((event: Event) => {
+    eventList.map((event: Event) => {
       const key = `${event.resource}/${moment(event.date).format('DD.MM.YYYY')}`
       const value = eventsMap.get(key)
       let eventList: Event[] = []

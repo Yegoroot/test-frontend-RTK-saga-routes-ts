@@ -32,7 +32,7 @@ export interface HistoryState {
 const initialState: HistoryState = {
   status: 'loading',
   events: {},
-  resources: {}
+  resources: {},
 }
 
 const cortByDate = (a: Event, b: Event) => compareDates(a.date, b.date)

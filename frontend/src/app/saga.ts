@@ -85,7 +85,12 @@ function* getDataRequestSaga() {
   }
 }
 
+function* getDataSaga(action: PayloadAction<Events>) {
+  yield put({ type: 'history/getEvents', payload: getEvents(action.payload) })
+}
+
 export function* rootSaga() {
   yield takeLatest('history/getDataRequest', getDataRequestSaga)
+  yield takeLatest('history/scrollEvents', getDataSaga)
   yield takeLatest('history/getEvents', fetchResources)
 }

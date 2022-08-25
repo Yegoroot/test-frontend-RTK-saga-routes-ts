@@ -22,7 +22,7 @@ export interface Resource {
 export type Events = Record<string, Event[]>
 
 export interface HistoryState {
-  status: 'idle' | 'loading' | 'failed';
+  status: 'idle' | 'loading' | 'scroll';
   data: Events
   events: Events
   resources: Record<string, Resource>
@@ -40,13 +40,16 @@ export const historySlice = createSlice({
   initialState,
   reducers: {
     setRecources: (state, action) => {
-      state.resources = action.payload
+      state.resources = Object.assign(state.resources, action.payload)
     },
     getEvents(state, action) {
       const [events, data] = action.payload
-      state.events = events
+      state.events = Object.assign(state.events, events)
       state.data = data
       state.status = 'idle'
+    },
+    scrollEvents(state, action) {
+      state.status = 'scroll'
     },
     getDataRequest(state) {
       state.status = 'loading'
@@ -54,7 +57,7 @@ export const historySlice = createSlice({
   }
 })
 
-export const { getDataRequest } = historySlice.actions
+export const { getDataRequest, scrollEvents } = historySlice.actions
 
 export const selectHistory = (state: RootState):RootState['history'] => state.history
 

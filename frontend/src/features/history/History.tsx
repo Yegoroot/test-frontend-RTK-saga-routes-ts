@@ -4,7 +4,7 @@ import {
 
 import { EventGroupList } from '../../components/EventGroupList'
 import { useAppSelector, useAppDispatch, } from '../../app/hooks'
-import { selectHistory, getDataRequest } from './historySlice'
+import { selectHistory, getDataRequest, scrollEvents } from './historySlice'
 import styles from './History.module.css'
 import useScrollTrigger from '../../hooks/useScrollTrigger'
 
@@ -20,7 +20,8 @@ export const History:FC = () => {
   useEffect(() => {
     if (triggeredValue) {
       setLoading(false)
-      console.log('Loading.....')
+      dispatch(scrollEvents(history.data))
+      console.log('Loading.....', history.data, history)
     }
   }, [triggeredValue])
 
@@ -29,11 +30,7 @@ export const History:FC = () => {
     dispatch(getDataRequest())
   }, [])
 
-  // useEffect(() => {
-  //   dispatch(getEventsRequest())
-  // }, [])
-
-  if (history.status === 'loading') return <div>Loading...</div>
+  if (history.status === 'loading') return <div>Loading all Data...</div>
 
   return (
     <div className={styles.table}>
@@ -46,6 +43,7 @@ export const History:FC = () => {
       <div ref={groupListWrapper}>
         <EventGroupList history={history} />
       </div>
+      <div>{history.status === 'scroll' && <>Loading...</>}</div>
       <div />
     </div>
   )

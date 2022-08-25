@@ -7,6 +7,7 @@ import { useAppSelector, useAppDispatch, } from '../../app/hooks'
 import { selectHistory, getDataRequest, scrollEvents } from './historySlice'
 import styles from './History.module.css'
 import useScrollTrigger from '../../hooks/useScrollTrigger'
+import { isEmpty } from '../../utils/isEmpty'
 
 export const History:FC = () => {
   const groupListWrapper = useRef<HTMLDivElement>(null) as unknown as { current: HTMLDivElement; }
@@ -20,8 +21,10 @@ export const History:FC = () => {
   useEffect(() => {
     if (triggeredValue) {
       setLoading(false)
-      dispatch(scrollEvents(history.data))
-      console.log('Loading.....', history.data, history)
+      if (!isEmpty(history.data)) {
+        dispatch(scrollEvents(history.data))
+        console.log('Loading.....', history)
+      }
     }
   }, [triggeredValue])
 

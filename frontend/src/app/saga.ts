@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { PayloadAction } from '@reduxjs/toolkit'
 import {
   call, all, put, takeLatest
@@ -14,15 +15,14 @@ function* fetchResources(action: PayloadAction<[Events, Events]>) {
   const eventsSets = Object.entries(action.payload[0])
 
   try {
-    // @ts-ignore
-    const responses = yield all(eventsSets.map((set) => {
-      const events = set[1]
-      const ids = events.map((ev) => `${ev.name}/${ev.id}`)
-      return call(axios.post, '/resources', { ids })
-    }))
+    const ids = eventsSets.map((set) => set[1].map((ev) => `${ev.name}/${ev.id}`)).flat()
 
-    const resources = responses.map((response: AxiosResponse) => [...response.data.items]).flat()
-    const resourcesMap = resources.reduce((a: Resource, v: Resource) => ({ ...a, [v.id]: v }), {})
+    // @ts-ignore
+    const responses = yield call(axios.post, '/resources', { ids })
+
+    yield console.log('eventIds', responses)
+
+    const resourcesMap = responses.data.items.reduce((a: Resource, v: Resource) => ({ ...a, [v.id]: v }), {})
 
     yield put({ type: 'history/setRecources', payload: resourcesMap })
   } catch (e) {

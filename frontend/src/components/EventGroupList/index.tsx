@@ -16,13 +16,13 @@ export const EventGroupList:FC<Props> = ({ history }) => {
   const getDetails = useCallback((key: string) => (resources[key] ? resources[key].details : ''), [resources])
   const getCode = useCallback((key: string) => (resources[key] ? resources[key].code : ''), [resources])
 
-  const eventGroup = (events: [string, Event[]]) => {
-    const title = getEventGroupTitle(events[0])
+  const eventGroup = (eventGroup: [string, Event[]]) => {
+    const title = getEventGroupTitle(eventGroup[0])
 
     return (
       <div
         className={styles.table__row}
-        key={events[0]}
+        key={eventGroup[0]}
       >
         <div className={styles.type}>
           <span
@@ -33,7 +33,7 @@ export const EventGroupList:FC<Props> = ({ history }) => {
           </span>
         </div>
         <div className={styles.eventinfo}>
-          {events[1].map((event) => (
+          {eventGroup[1].map((event) => (
             <div
               key={event.id}
               className={styles.eventinfo__row}

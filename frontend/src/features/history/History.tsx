@@ -1,19 +1,37 @@
 import {
-  useEffect, FC,
+  useEffect, FC, useRef, useState
 } from 'react'
 
 import { EventGroupList } from '../../components/EventGroupList'
 import { useAppSelector, useAppDispatch, } from '../../app/hooks'
-import { getEvents, selectHistory } from './historySlice'
+import { selectHistory, getDataRequest } from './historySlice'
 import styles from './History.module.css'
+import useScrollTrigger from '../../hooks/useScrollTrigger'
 
 export const History:FC = () => {
+  const groupListWrapper = useRef<HTMLDivElement>(null) as unknown as { current: HTMLDivElement; }
+
   const history = useAppSelector(selectHistory)
   const dispatch = useAppDispatch()
 
+  const [loading, setLoading] = useState(false)
+  const triggeredValue = useScrollTrigger(groupListWrapper, loading)
+
   useEffect(() => {
-    dispatch(getEvents())
+    if (triggeredValue) {
+      setLoading(false)
+      console.log('Loading.....')
+    }
+  }, [triggeredValue])
+
+  useEffect(() => {
+    // all Data
+    dispatch(getDataRequest())
   }, [])
+
+  // useEffect(() => {
+  //   dispatch(getEventsRequest())
+  // }, [])
 
   if (history.status === 'loading') return <div>Loading...</div>
 
@@ -25,7 +43,10 @@ export const History:FC = () => {
         <div>Code</div>
         <div>Date</div>
       </div>
-      <EventGroupList history={history} />
+      <div ref={groupListWrapper}>
+        <EventGroupList history={history} />
+      </div>
+      <div />
     </div>
   )
 }

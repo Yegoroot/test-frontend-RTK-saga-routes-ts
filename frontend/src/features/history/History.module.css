@@ -74,13 +74,3 @@
     color: var(--second);
   }
 }
-
-
-.scroll {
-  width: 200px;
-  height: 100px;
-  overflow-y: scroll;
-  margin-bottom: 100px;
-  border: solid #929292;
-  padding: 20px 10px;
-}

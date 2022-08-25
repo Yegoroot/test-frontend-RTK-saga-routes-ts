@@ -15,7 +15,7 @@ export interface Event {
 export interface Resource {
   id: string,
   details: string,
-  values: string[],
+  values: string[] | {value: string | number, unit: string}[],
   code: string
 }
 

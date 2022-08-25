@@ -1,11 +1,10 @@
 /* eslint-disable no-underscore-dangle */
 import { PayloadAction } from '@reduxjs/toolkit'
 import {
-  call, all, put, takeLatest
+  call, put, takeLatest
 } from 'redux-saga/effects'
 import moment from 'moment'
 
-import { AxiosResponse } from 'axios'
 import { Event, Resource, Events } from '../features/history/historySlice'
 import axios from '../utils/axios'
 import { compareDates } from '../utils/date'
@@ -19,9 +18,6 @@ function* fetchResources(action: PayloadAction<[Events, Events]>) {
 
     // @ts-ignore
     const responses = yield call(axios.post, '/resources', { ids })
-
-    yield console.log('eventIds', responses)
-
     const resourcesMap = responses.data.items.reduce((a: Resource, v: Resource) => ({ ...a, [v.id]: v }), {})
 
     yield put({ type: 'history/setRecources', payload: resourcesMap })
